@@ -14,6 +14,8 @@ public interface UserService {
 	public Optional <User> findById(Long id);
 	public Optional <User> findByCin(String cin);
 	public ResponseEntity<?>  addNewUser(User user);
+	public ResponseEntity<?>  updateUser(User user,Long id);
+	public ResponseEntity<?>  deletewUserById(Long id);
 	public User save(User user);
 	
 	

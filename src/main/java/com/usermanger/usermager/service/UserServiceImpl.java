@@ -3,6 +3,8 @@ package com.usermanger.usermager.service;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -79,6 +81,79 @@ public class UserServiceImpl implements UserService {
 
 	}
 
+	boolean comparerDeuxUser(User user1 , User user2)
+	{
+		if(user1.equals(user2))
+			return true;
+		else
+			return false;
+	}
+	/*
+	 * Fonction que permet de mettre a jour  un utilisateur dans la base
+	 * 
+	 * @params user id de type Long et le nouvelle User
+	 * 
+	 * @return ResponseEntity<?> 
+	 */
+	@Transactional
+	public ResponseEntity<?> updateUser(User user, Long id) {
+		// Trouver un utlisateur par son id
+		Optional <User> ancUserOp=this.findById(id);
+		// si l'utilisateur existe
+		if(ancUserOp.isPresent())
+		{
+			// Tester Si le cin ajouter est unique
+			Optional <User> userCin=this.findByCin(user.getCin());
+			if(userCin.isPresent()&&userCin.get().getId()!=id)
+			{
+				return new ResponseEntity<Void>(HttpStatus.CONFLICT);	
+			}else
+			{
+				ancUserOp.get().setAge(user.getAge());
+				ancUserOp.get().setCin(user.getCin());
+				ancUserOp.get().setCountry(user.getCountry());
+				ancUserOp.get().setFirstName(user.getFirstName());
+				ancUserOp.get().setLastname(user.getLastname());
+				// extract le nouveau  utlisateur par son id
+				Optional <User> newUserOp=this.findById(id);
+				if(this.comparerDeuxUser(ancUserOp.get(), newUserOp.get()))
+					return new ResponseEntity<User>(ancUserOp.get(),HttpStatus.OK);
+				else
+					return new ResponseEntity<Void>(HttpStatus.CONFLICT);	
+			}
+			
+		}else
+		{
+			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);	
+		}
+	}
+	/*
+	 * Fonction que permet de supprimer un utilisateur de la base
+	 * 
+	 * @params user id de type Long
+	 * 
+	 * @return ResponseEntity<?> 
+	 */
+	public ResponseEntity<?> deletewUserById(Long id) {
+		Optional <User> userOp=this.findById(id);
+		if(userOp.isPresent())
+		{
+			this.userRepository.deleteById(id);
+			Optional <User> userDeletingTest=this.findById(id);
+			if(userDeletingTest.isPresent()) 
+			{
+				return new ResponseEntity<Void>(HttpStatus.CONFLICT);
+			}else
+			{
+				return new ResponseEntity<Void>(HttpStatus.OK);
+			}
+		}else
+		{
+			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+		}
+		 
+	}
+
 	/*
 	 * Fonction que permet de sauvgarder un utilisateur dans la base
 	 * 
@@ -90,7 +165,5 @@ public class UserServiceImpl implements UserService {
 		// TODO Auto-generated method stub
 		return this.userRepository.saveAndFlush(user);
 	}
-
-	 
 
 }
