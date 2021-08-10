@@ -18,16 +18,18 @@ import lombok.Setter;
 @Entity
 public class User {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Long id;
 	private String lastname;
 	private String firstName;
 	private Integer age;
 	private String country;
+	private String cin;
+	
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", lastname=" + lastname + ", firstName=" + firstName + ", age=" + age + ", country="
-				+ country + "]";
+				+ country + ", cin=" + cin + "]";
 	}
 	
 	
