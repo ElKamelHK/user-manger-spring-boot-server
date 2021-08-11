@@ -1,6 +1,9 @@
 Manifest-Version: 1.0
-Build-Jdk-Spec: 11
+Built-By: SectionDevelopement
+Build-Jdk: 11.0.6
 Implementation-Title: usermager
 Implementation-Version: 0.0.1-SNAPSHOT
+Implementation-Vendor-Id: com.user-manger
+Implementation-URL: https://spring.io/projects/spring-boot/usermager
 Created-By: Maven Integration for Eclipse
 

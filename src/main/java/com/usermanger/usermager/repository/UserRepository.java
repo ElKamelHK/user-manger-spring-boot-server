@@ -11,4 +11,5 @@ import com.usermanger.usermager.model.User;
 public interface UserRepository extends JpaRepository<User,Long> {
 	
 Optional<User> findByCin(String cin);
+Optional<User> findByUsername(String username);
 }

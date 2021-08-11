@@ -6,8 +6,14 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.usermanger.usermager.model.User;
@@ -134,6 +140,7 @@ public class UserServiceImpl implements UserService {
 	 * 
 	 * @return ResponseEntity<?> 
 	 */
+	 
 	public ResponseEntity<?> deletewUserById(Long id) {
 		Optional <User> userOp=this.findById(id);
 		if(userOp.isPresent())
@@ -165,5 +172,30 @@ public class UserServiceImpl implements UserService {
 		// TODO Auto-generated method stub
 		return this.userRepository.saveAndFlush(user);
 	}
+
+	public User findByUsername(String username) {
+		// TODO Auto-generated method stub
+		Optional<User> userOp=this.userRepository.findByUsername(username);
+		if(userOp.isPresent())
+			return userOp.get();
+		else
+			return null;	
+	}
+
+ 
+ 
+	@Bean
+	private PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
+
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	 
 
 }

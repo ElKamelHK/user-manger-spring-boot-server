@@ -33,12 +33,12 @@ public class UserController {
 		// TODO Auto-generated constructor stub
 	}
 	
-	@GetMapping("findAll")
+	@GetMapping("public/findAll")
 	public List<User> findAllUsers()
 	{
 		return this.userService.findAll();
 	}
-	@GetMapping("findById/{id}")
+	@GetMapping("token/findById/{id}")
 	public ResponseEntity<?> findById(@PathVariable Long id)
 	{
 		Optional<User>optUser=this.userService.findById(id);
@@ -51,17 +51,17 @@ public class UserController {
 		}
 	}
 	
-	@PostMapping("add")
+	@PostMapping("token/add")
 	public ResponseEntity<?>  addNewUser(@RequestBody User user)
 	{
 		return this.userService.addNewUser(user);
 	}
-	@PutMapping("update/{id}")
+	@PutMapping("token/update/{id}")
 	public ResponseEntity<?> updateUser(@RequestBody User user, @PathVariable Long id)
 	{
 		return this.userService.updateUser(user, id);
 	}
-	@DeleteMapping("del/{id}")
+	@DeleteMapping("token/del/{id}")
 	public ResponseEntity<?> deletewUserById(@PathVariable Long id)
 	{
 		 
